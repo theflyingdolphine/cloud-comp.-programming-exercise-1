@@ -5,40 +5,48 @@ import matplotlib.pyplot as plt
 import psutil as ps
 import time
 
-start = time.time()
+def main():
+   start = time.time()
 
-#initialize 2D matrices of set, all vaues are assigned a random number in the range (0, 1)
-arrayA = np.random.randint(2, size=(pow(10,4), pow(10,3)))  
-arrayB = np.random.randint(2, size=(pow(10,3), pow(10,4)))  
-arrayC = np.random.randint(2, size=(pow(10,4), 1))
-print("arrays initialized")
 
-#print(np.array(arrayA), "\n", np.array(arrayB), "\n", np.array(arrayC), "\n")
+   #initialize 2D matrices of set, all vaues are assigned a random number in the range (0, 1)
+   arrayA = np.random.randint(2, size=(pow(10,3), pow(10,1)))  
+   arrayB = np.random.randint(2, size=(pow(10,1), pow(10, 3)))  
+   arrayC = np.random.randint(2, size=(pow(10,3), 1))
+   print("arrays initialized")
 
-#calculate the dot product of matrix A and matrix B
-calculated_AB = np.dot(arrayA, arrayB)
-print("calculate 1 done")
+   #print(np.array(arrayA), "\n", np.array(arrayB), "\n", np.array(arrayC), "\n")
 
-#calculate the dot product of matrix AB and matrix C
-calculated_D = np.dot(calculated_AB, arrayC)
-print("calculate 2 done")
+   #calculate the dot product of matrix A and matrix B
+   calculated_AB = np.dot(arrayA, arrayB)
+   print("calculate 1 done")
 
-#CPU and memory usage
-print("CPU percentage", ps.cpu_percent())
-print("Virtual memory", ps.virtual_memory())
+   #calculate the dot product of matrix AB and matrix C
+   calculated_D = np.dot(calculated_AB, arrayC)
+   print("calculate 2 done")
 
-#displays time taken for system to run
-end = time.time()
-print(end - start)
+   #CPU and memory usage
+   print("CPU percentage", ps.cpu_percent())
+   print("Virtual memory", ps.virtual_memory())
 
-#plot CDF
-calculated_CDF = np.cumsum(sorted(calculated_D))
-t_1, initiate_histogram = np.histogram(calculated_CDF)
-plt.xlabel("Data/ time")
-plt.ylabel("Percent")
-plt.plot(t_1, color="pink")
-plt.show()
+   #displays time taken for system to run
+   end = time.time()
+   print(end - start)
 
+   #plot CDF
+   calculated_CDF = np.cumsum(np.argsort(calculated_D))
+   initiate1, initiate2 = np.histogram(calculated_CDF)
+   plt.xlabel("Data")
+   plt.ylabel("Percent")
+   plt.title("CDF")
+
+   cdf = np.cumsum((initiate1 / sum(initiate1)))
+   plt.plot(initiate2[1:], cdf, color="pink", marker="o")
+   plt.show()
+   
+
+if __name__=="__main__":
+   main()
 
 
 #multiplication of two matrices - method not used
